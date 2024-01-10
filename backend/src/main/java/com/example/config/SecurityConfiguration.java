@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.entity.RestBean;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,7 +45,8 @@ public class SecurityConfiguration {
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        response.getWriter().write("ok");
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(RestBean.success().asJsonString());
 
     }
     public void onAuthenticationFailure(HttpServletRequest request,
