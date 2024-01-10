@@ -53,7 +53,8 @@ public class SecurityConfiguration {
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        response.getWriter().write("fail");
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(RestBean.failure(401, exception.getMessage()).asJsonString());
 
     }
     public void onLogoutSuccess(HttpServletRequest request,
