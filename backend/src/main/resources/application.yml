@@ -3,3 +3,7 @@ spring:
     jwt:
       key: abcdefjhijk
       expire: 7
+
+
+
+

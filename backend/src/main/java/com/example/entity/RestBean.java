@@ -8,6 +8,12 @@ public record RestBean<T>(int code, T data, String message) {
         return new RestBean<>(200,data,"请求成功");
     }
 
+    public static <T> RestBean<T> unauthorized(String message){
+        return failure(401,message);
+    }
+    public static <T> RestBean<T> forbidden(String message){
+        return failure(403,message);
+    }
     public static <T>RestBean<T> success(){
         return  success(null);
     }
