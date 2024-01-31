@@ -20,4 +20,4 @@ public class Account {
     String email;
     String role;
     Date registerTime;
-} 
+}

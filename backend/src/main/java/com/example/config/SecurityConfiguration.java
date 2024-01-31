@@ -2,13 +2,16 @@ package com.example.config;
 
 import com.example.entity.RestBean;
 
+import com.example.entity.dto.Account;
 import com.example.entity.vo.response.AuthorizeVO;
 import com.example.filter.JwtAuthorizeFilter;
+import com.example.service.AccountService;
 import com.example.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,6 +33,10 @@ import java.io.PrintWriter;
 
 @Configuration
 public class SecurityConfiguration {
+
+    @Resource
+    AccountService service;
+
     @Resource
     JwtUtils utils;
 
@@ -83,12 +90,12 @@ public class SecurityConfiguration {
                                         Authentication authentication) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         User user = (User) authentication.getPrincipal();
-        String token = utils.createJwt(user,1,"小明");
+        Account account = service.findAccountByNameOrEmail(user.getUsername());
+        String token = utils.createJwt(user,account.getId(),account.getUsername());
         AuthorizeVO vo = new AuthorizeVO();
+        BeanUtils.copyProperties(account,vo);
         vo.setExpire(utils.expireTime());
-        vo.setRole("");
         vo.setToken(token);
-        vo.setUsername("小明");
         response.getWriter().write(RestBean.success(vo).asJsonString());
 
     }
